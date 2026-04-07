@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+  <title>Ray Tracer</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="./style.css" rel="stylesheet" />
+</head>
+<body>
+<div class="app">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-logo">
+      <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="7" cy="7" r="4" stroke="white" stroke-width="1.5"/>
+        <path d="M7 1v2M7 11v2M1 7h2M11 7h2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="header-title">rt_wasm</span>
+    <div class="header-sep"></div>
+    <span class="header-sub">Ray tracer</span>
+    <div class="header-spacer"></div>
+    <button class="render-btn" id="render-btn">
+      <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="2,1 13,7 2,13" fill="white"/>
+      </svg>
+      Render
+    </button>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-scroll">
+
+      <!-- Canvas Settings -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Canvas</span>
+        </div>
+        <div class="panel-body" style="display:flex;flex-direction:column;gap:10px;">
+          <div class="field">
+            <span class="field-label">Aspect ratio</span>
+            <select id="aspect-select">
+              <option value="1.7778">16 : 9</option>
+              <option value="1.3333">4 : 3</option>
+              <option value="2.3333">21 : 9</option>
+              <option value="1">1 : 1</option>
+              <option value="0.5625">9 : 16</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <span class="field-label">Width (px)</span>
+              <input type="number" id="width-input" value="800" min="100" max="3840" step="50"/>
+            </div>
+            <div class="field">
+              <span class="field-label">Height (px)</span>
+              <div class="height-display" id="height-display">450</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Sphere -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Add sphere</span>
+        </div>
+        <div class="panel-body">
+          <div class="xyz-grid">
+            <div class="xyz-field">
+              <span class="xyz-label">X</span>
+              <input type="number" id="sx" value="0.0" step="0.1"/>
+            </div>
+            <div class="xyz-field">
+              <span class="xyz-label">Y</span>
+              <input type="number" id="sy" value="0.0" step="0.1"/>
+            </div>
+            <div class="xyz-field">
+              <span class="xyz-label">Z</span>
+              <input type="number" id="sz" value="-1.0" step="0.1"/>
+            </div>
+            <div class="xyz-field">
+              <span class="xyz-label">R</span>
+              <input type="number" id="sr" value="0.5" step="0.05" min="0.01"/>
+            </div>
+          </div>
+          <button class="add-btn" id="add-btn">+ Add sphere</button>
+        </div>
+      </div>
+
+      <!-- Sphere List -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Spheres</span>
+          <span class="sphere-count-badge" id="sphere-count">2</span>
+        </div>
+        <div class="panel-body">
+          <div class="sphere-list" id="sphere-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- Canvas Area -->
+  <main class="canvas-area">
+    <div class="canvas-toolbar">
+      <div class="status-dot" id="status-dot"></div>
+      <span class="canvas-info" id="canvas-info">Ready to render</span>
+      <div style="flex:1"></div>
+      <span class="canvas-info" id="dim-info"><span id="dim-w">800</span> × <span id="dim-h">450</span></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="canvas-wrap">
+      <div class="canvas-placeholder" id="placeholder">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="14" stroke="currentColor" stroke-width="2"/>
+          <path d="M10 24C10 24 16 14 24 14C32 14 38 24 38 24C38 24 32 34 24 34C16 34 10 24 10 24Z" stroke="currentColor" stroke-width="2"/>
+          <circle cx="24" cy="24" r="4" fill="currentColor"/>
+        </svg>
+        <p>Press Render to trace the scene</p>
+      </div>
+      <canvas id="img" style="display:none;"></canvas>
+    </div>
+  </main>
+
+</div>
+
+<script type="module" src="index.js"></script>
+
+</body>
+</html>

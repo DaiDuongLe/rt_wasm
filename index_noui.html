@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+  </head>
+  <body>
+    <canvas id="img"></canvas> 
+    
+    <script type="module">
+      import init, { HittableList, Camera } from './pkg/rt_wasm.js';
+
+      
+      async function run() {
+        await init();
+       
+        const canvas = document.getElementById("img");
+        let aspect_ratio = 16.0 / 9.0;
+        let width = 800;
+        let height = width / aspect_ratio;
+        height = height < 1 ? 1 : height;
+
+        canvas.height = height;
+        canvas.width = width;
+
+        const ctx = canvas.getContext('2d');
+
+        const getIndex = (row, column) => {
+          return row * width + column;
+        };
+
+        const drawCells = () => {
+          ctx.beginPath();
+
+          const SIZE = 1;
+          let world = HittableList.new();
+
+          world.add_sphere(0.0, 0.0, -1.0, 0.5);
+          world.add_sphere(0.0, -100.5, -1.0, 100.0);
+          let cam = Camera.new();
+          
+          cam.aspect_ratio = aspect_ratio;
+          cam.image_width = width;
+
+          let img = cam.render(world);
+          for (let row = 0; row < height; row++) {
+            for (let col = 0; col < width; col++) {
+              const idx = getIndex(row, col);
+
+              ctx.fillStyle = img[idx];
+
+              ctx.fillRect(
+                col,
+                row,
+                SIZE,
+                SIZE
+              );
+            }
+          }
+          ctx.stroke();
+        };
+
+        drawCells();
+      }
+
+      run();
+    </script>
+  </body>
+</html>
