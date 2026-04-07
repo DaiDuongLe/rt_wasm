@@ -1,0 +1,15 @@
+{
+  "name": "rt_wasm",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "rt_wasm_bg.wasm",
+    "rt_wasm.js",
+    "rt_wasm.d.ts"
+  ],
+  "main": "rt_wasm.js",
+  "types": "rt_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
