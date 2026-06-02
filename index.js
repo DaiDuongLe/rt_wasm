@@ -130,7 +130,7 @@ document.getElementById('add-btn').addEventListener('click', () => {
   } else if (activeMat === 'glass') {
     s.idr = parseFloat(document.getElementById('glass-idr').value) || 1.5;
   } else if (activeMat === 'hollow') {
-    s.thickness = parseFloat(document.getElementById('hollow-thickness').value) || 0.05;
+    s.thickness = parseFloat(document.getElementById('hollow-thickness').value) || 0.1;
   }
 
   spheres.push(s);
