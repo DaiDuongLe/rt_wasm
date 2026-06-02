@@ -1,18 +1,23 @@
+use std::rc::Rc;
+
 use crate::hittable::*;
 use crate::interval::*;
+use crate::material::*;
 use crate::ray::*;
 use crate::vec3::*;
 
 pub struct Sphere {
     center: Vec3,
     radius: f64,
+    mat: Rc<dyn Material>,
 }
 
 impl Sphere {
-    pub fn new(center: &Vec3, radius: f64) -> Self {
+    pub fn new(center: &Vec3, radius: f64, mat: Rc<dyn Material>) -> Self {
         Self {
             center: *center,
             radius: radius.max(0.0),
+            mat,
         }
     }
 }
@@ -45,6 +50,7 @@ impl Hittable for Sphere {
         rec.p = r.at(rec.t);
         let outward_normal = (rec.p - self.center) / self.radius; // unit vector for sphere doesn't req. sqrt
         rec.set_face_normal(r, &outward_normal);
+        rec.mat = Rc::clone(&self.mat);
 
         true
     }

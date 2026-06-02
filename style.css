@@ -401,3 +401,105 @@ select option { background: var(--surface3); }
   100% { transform: translateX(350%); }
 }
 
+
+/* ── Sidebar scroll fix ── */
+.sidebar {
+  min-height: 0;
+}
+.sidebar-scroll {
+  min-height: 0;
+}
+
+/* ── Panel collapse ── */
+.panel-header {
+  cursor: pointer;
+  user-select: none;
+  border-bottom: none;        /* only shown when open */
+}
+.panel-header:hover {
+  background: rgba(255,255,255,0.02);
+}
+.panel-header.open {
+  border-bottom: 1px solid var(--border);
+}
+.panel-chevron {
+  font-size: 9px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  line-height: 1;
+}
+.panel-header.open .panel-chevron {
+  transform: rotate(180deg);
+}
+.panel-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-body.collapsed {
+  display: none;
+}
+
+/* ── Section label (inside panel) ── */
+.section-label {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Material tabs ── */
+:root {
+  --mat-matte:  #e8a87c;
+  --mat-metal:  #7eb8e8;
+  --mat-glass:  #a8e8d8;
+  --mat-hollow: #d4b8f0;
+}
+
+.mat-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.mat-tab {
+  padding: 5px 2px;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mat-tab:hover { color: var(--text-muted); border-color: var(--border-hover); }
+.mat-tab.active[data-mat="matte"]  { color: var(--mat-matte);  border-color: var(--mat-matte);  background: rgba(232,168,124,0.1); }
+.mat-tab.active[data-mat="metal"]  { color: var(--mat-metal);  border-color: var(--mat-metal);  background: rgba(126,184,232,0.1); }
+.mat-tab.active[data-mat="glass"]  { color: var(--mat-glass);  border-color: var(--mat-glass);  background: rgba(168,232,216,0.1); }
+.mat-tab.active[data-mat="hollow"] { color: var(--mat-hollow); border-color: var(--mat-hollow); background: rgba(212,184,240,0.1); }
+
+/* ── Per-material fields ── */
+.mat-fields { display: none; flex-direction: column; gap: 9px; }
+.mat-fields.active { display: flex; }
+
+/* ── Sphere list: material-coloured dots ── */
+.sphere-dot[data-mat="matte"]  { background: var(--mat-matte);  box-shadow: 0 0 5px rgba(232,168,124,0.5); }
+.sphere-dot[data-mat="metal"]  { background: var(--mat-metal);  box-shadow: 0 0 5px rgba(126,184,232,0.5); }
+.sphere-dot[data-mat="glass"]  { background: var(--mat-glass);  box-shadow: 0 0 5px rgba(168,232,216,0.5); }
+.sphere-dot[data-mat="hollow"] { background: var(--mat-hollow); box-shadow: 0 0 5px rgba(212,184,240,0.5); }
+.sphere-dot[data-mat="ground"] { background: var(--success);    box-shadow: 0 0 5px rgba(62,207,142,0.4); }
+
+.sphere-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* ── Camera panel grid helpers ── */
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }

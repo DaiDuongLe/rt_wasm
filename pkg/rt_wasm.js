@@ -37,6 +37,30 @@ export class Camera {
         return v1;
     }
     /**
+     * @param {number} u
+     * @param {number} v
+     * @param {number} w
+     */
+    set_lookat(u, v, w) {
+        wasm.camera_set_lookat(this.__wbg_ptr, u, v, w);
+    }
+    /**
+     * @param {number} u
+     * @param {number} v
+     * @param {number} w
+     */
+    set_lookfrom(u, v, w) {
+        wasm.camera_set_lookfrom(this.__wbg_ptr, u, v, w);
+    }
+    /**
+     * @param {number} u
+     * @param {number} v
+     * @param {number} w
+     */
+    set_vup(u, v, w) {
+        wasm.camera_set_vup(this.__wbg_ptr, u, v, w);
+    }
+    /**
      * @returns {number}
      */
     get aspect_ratio() {
@@ -48,6 +72,27 @@ export class Camera {
      */
     get image_width() {
         const ret = wasm.__wbg_get_camera_image_width(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    get max_depth() {
+        const ret = wasm.__wbg_get_camera_max_depth(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    get samples_per_pixel() {
+        const ret = wasm.__wbg_get_camera_samples_per_pixel(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    get vfov() {
+        const ret = wasm.__wbg_get_camera_vfov(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -61,6 +106,24 @@ export class Camera {
      */
     set image_width(arg0) {
         wasm.__wbg_set_camera_image_width(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @param {number} arg0
+     */
+    set max_depth(arg0) {
+        wasm.__wbg_set_camera_max_depth(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @param {number} arg0
+     */
+    set samples_per_pixel(arg0) {
+        wasm.__wbg_set_camera_samples_per_pixel(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @param {number} arg0
+     */
+    set vfov(arg0) {
+        wasm.__wbg_set_camera_vfov(this.__wbg_ptr, arg0);
     }
 }
 if (Symbol.dispose) Camera.prototype[Symbol.dispose] = Camera.prototype.free;
@@ -87,10 +150,46 @@ export class HittableList {
      * @param {number} x
      * @param {number} y
      * @param {number} z
-     * @param {number} r
+     * @param {number} radius
+     * @param {number} idr
      */
-    add_sphere(x, y, z, r) {
-        wasm.hittablelist_add_sphere(this.__wbg_ptr, x, y, z, r);
+    add_glass_sphere(x, y, z, radius, idr) {
+        wasm.hittablelist_add_glass_sphere(this.__wbg_ptr, x, y, z, radius, idr);
+    }
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @param {number} radius
+     * @param {number} thickness
+     */
+    add_hollow_glass_sphere(x, y, z, radius, thickness) {
+        wasm.hittablelist_add_hollow_glass_sphere(this.__wbg_ptr, x, y, z, radius, thickness);
+    }
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @param {number} radius
+     * @param {number} r
+     * @param {number} g
+     * @param {number} b
+     */
+    add_matte_sphere(x, y, z, radius, r, g, b) {
+        wasm.hittablelist_add_matte_sphere(this.__wbg_ptr, x, y, z, radius, r, g, b);
+    }
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @param {number} radius
+     * @param {number} r
+     * @param {number} g
+     * @param {number} b
+     * @param {number} fuzz
+     */
+    add_metal_sphere(x, y, z, radius, r, g, b, fuzz) {
+        wasm.hittablelist_add_metal_sphere(this.__wbg_ptr, x, y, z, radius, r, g, b, fuzz);
     }
     clear() {
         wasm.hittablelist_clear(this.__wbg_ptr);
@@ -111,6 +210,9 @@ function __wbg_get_imports() {
         __wbg___wbindgen_throw_81fc77679af83bc6: function(arg0, arg1) {
             throw new Error(getStringFromWasm0(arg0, arg1));
         },
+        __wbg_getRandomValues_76dfc69825c9c552: function() { return handleError(function (arg0, arg1) {
+            globalThis.crypto.getRandomValues(getArrayU8FromWasm0(arg0, arg1));
+        }, arguments); },
         __wbindgen_cast_0000000000000001: function(arg0, arg1) {
             // Cast intrinsic for `Ref(String) -> Externref`.
             const ret = getStringFromWasm0(arg0, arg1);
@@ -139,6 +241,12 @@ const HittableListFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_hittablelist_free(ptr >>> 0, 1));
 
+function addToExternrefTable0(obj) {
+    const idx = wasm.__externref_table_alloc();
+    wasm.__wbindgen_externrefs.set(idx, obj);
+    return idx;
+}
+
 function _assertClass(instance, klass) {
     if (!(instance instanceof klass)) {
         throw new Error(`expected instance of ${klass.name}`);
@@ -154,6 +262,11 @@ function getArrayJsValueFromWasm0(ptr, len) {
     }
     wasm.__externref_drop_slice(ptr, len);
     return result;
+}
+
+function getArrayU8FromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    return getUint8ArrayMemory0().subarray(ptr / 1, ptr / 1 + len);
 }
 
 let cachedDataViewMemory0 = null;
@@ -175,6 +288,15 @@ function getUint8ArrayMemory0() {
         cachedUint8ArrayMemory0 = new Uint8Array(wasm.memory.buffer);
     }
     return cachedUint8ArrayMemory0;
+}
+
+function handleError(f, args) {
+    try {
+        return f.apply(this, args);
+    } catch (e) {
+        const idx = addToExternrefTable0(e);
+        wasm.__wbindgen_exn_store(idx);
+    }
 }
 
 let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
